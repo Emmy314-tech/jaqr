@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="JAQR creates beautiful, customizable QR codes for links, WhatsApp, email, phone numbers, Wi-Fi and text.">
+<title>JAQR — Scan it. Open it.</title>
+<style>
+:root{--bg:#f4f3ff;--glow:#d9d4ff;--panel:#fff;--panel2:#f7f6fe;--line:#e2dff5;--muted:#5f6a86;--text:#17152d;--accent:#6b5cf6;--accent2:#8b7cff;--soft:#6b5cf61a;--good:#12915a;--warn:#c2410c;--shadow:#4b3fd01f;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#080b14;--glow:#25204d;--panel:#121a2a;--panel2:#0b1120;--line:#263248;--muted:#93a1ba;--text:#f5f7fb;--accent:#8b7cff;--accent2:#6b5cf6;--soft:#8b7cff22;--good:#62d69b;--warn:#fbbf77;--shadow:#0006}}
+:root[data-theme="dark"]{--bg:#080b14;--glow:#25204d;--panel:#121a2a;--panel2:#0b1120;--line:#263248;--muted:#93a1ba;--text:#f5f7fb;--accent:#8b7cff;--accent2:#6b5cf6;--soft:#8b7cff22;--good:#62d69b;--warn:#fbbf77;--shadow:#0006}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100vh;color:var(--text);background:radial-gradient(ellipse at 50% -10%,var(--glow),transparent 45%),var(--bg);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+.shell{max-width:1100px;margin:auto;padding:24px 18px 44px}
+nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:44px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:-.4px}
+.mark{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#a698ff,#6252ed);display:grid;place-items:center;color:#fff;box-shadow:0 8px 26px #7667ff55}
+.pill{border:1px solid var(--line);background:var(--panel);color:var(--muted);border-radius:30px;padding:8px 14px;font-size:12px;cursor:pointer;font-weight:600}
+.hero{text-align:center;margin-bottom:30px}
+.eyebrow{display:inline-block;color:var(--accent);background:var(--soft);padding:7px 13px;border-radius:30px;font-size:11px;font-weight:700;letter-spacing:.6px}
+.hero h1{font-size:clamp(34px,7vw,56px);letter-spacing:-2.2px;line-height:1.05;margin:16px 0 12px}
+.hero h1 span{background:linear-gradient(90deg,var(--accent2),#c06cff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--muted);margin:0}
+.workspace{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(320px,.95fr);gap:20px;align-items:start}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 20px 60px var(--shadow)}
+.head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.head h2{font-size:16px;margin:0}
+.step{font-size:11px;color:var(--accent);background:var(--soft);padding:6px 10px;border-radius:20px;font-weight:700}
+.field{margin:16px 0}label,.label{display:block;font-size:12px;color:var(--muted);font-weight:650;margin:12px 0 7px}
+.control{width:100%;background:var(--panel2);border:1px solid var(--line);padding:12px 13px;border-radius:12px;outline:none;transition:.2s}
+.control:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--soft)}textarea.control{min-height:80px;resize:vertical}
+.types{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tbtn{background:var(--panel2);border:1px solid var(--line);color:var(--muted);border-radius:13px;padding:11px 6px;cursor:pointer;font-size:12px;font-weight:650;transition:.18s}
+.tbtn span{display:block;font-size:18px;margin-bottom:4px}.tbtn:hover{transform:translateY(-1px)}
+.tbtn.on{border-color:var(--accent);background:var(--soft);color:var(--text);box-shadow:inset 0 0 0 1px var(--accent)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.color{display:flex;align-items:center;gap:10px;background:var(--panel2);border:1px solid var(--line);padding:6px 10px;border-radius:12px}
+.color input{width:30px;height:30px;border:0;padding:0;background:none;cursor:pointer}.color code{font-size:12px;color:var(--muted)}
+.presets{display:flex;gap:9px;flex-wrap:wrap}
+.sw{width:34px;height:34px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0;position:relative;overflow:hidden}
+.sw i{position:absolute;inset:0;clip-path:polygon(100% 0,100% 100%,0 100%)}
+.sw:hover{border-color:var(--accent)}
+.rh{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-bottom:8px}.rh strong{color:var(--text)}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.upload{border:1px dashed var(--line);background:var(--panel2);padding:12px;border-radius:12px;font-size:12px;color:var(--muted)}
+.drop{display:flex;align-items:center;gap:12px;border:1.5px dashed var(--line);background:var(--panel2);padding:12px;border-radius:14px;cursor:pointer;margin:0;transition:.2s}.drop:hover,.drop.over{border-color:var(--accent);background:var(--soft)}.thumb{width:48px;height:48px;border-radius:12px;background:var(--panel) center/contain no-repeat;border:1px solid var(--line);display:grid;place-items:center;font-size:22px;color:var(--accent);flex:none}.dtxt{flex:1;min-width:0}.dtxt b{display:block;font-size:13px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dtxt small{font-size:11px;color:var(--muted)}.rm{border:1px solid var(--line);background:var(--panel);color:var(--warn);border-radius:10px;padding:8px 11px;font-size:12px;font-weight:700;cursor:pointer}
+.vh{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;pointer-events:none}.drop .rm{flex:none}.modal{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(16px + env(safe-area-inset-bottom,0px));z-index:50}.modal.on{display:flex}.mbox{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:18px;width:100%;max-width:380px;max-height:100%;overflow:auto}.mbox h3{margin:0 0 4px;font-size:16px}.cvwrap{border-radius:14px;overflow:hidden;margin:12px 0;background:repeating-conic-gradient(#8884 0 25%,transparent 0 50%) 0 0/16px 16px;touch-action:none}#cv{display:block;width:100%;height:auto;cursor:grab}.tools{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:12px}.tools .btn{padding:10px 4px}.tools .btn.on{border-color:var(--accent);background:var(--soft)}.mfoot{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}
+.hint{font-size:11px;color:var(--muted);line-height:1.5;margin-top:7px}
+.preview{position:sticky;top:calc(14px + env(safe-area-inset-top,0px))}
+.stage{min-height:340px;border-radius:18px;border:1px dashed var(--line);background:radial-gradient(circle at 50% 40%,var(--soft),transparent 70%),var(--panel2);display:flex;align-items:center;justify-content:center;padding:22px}
+.empty{text-align:center;color:var(--muted);font-size:12px}.empty b{display:block;color:var(--text);font-size:14px;margin:12px 0 4px}
+.eicon{width:70px;height:70px;border-radius:20px;border:1px solid var(--line);background:var(--panel);display:grid;place-items:center;font-size:32px;margin:auto;color:var(--accent)}
+.paper{display:none;padding:16px;border-radius:16px;box-shadow:0 18px 50px #0003;position:relative;max-width:100%;animation:pop .35s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes pop{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
+.paper #qr{line-height:0}.paper canvas,.paper img{display:block;max-width:100%;height:auto;width:100%}
+.logo{position:absolute;display:none;object-fit:contain;padding:4px;border-radius:9px;left:50%;top:50%;transform:translate(-50%,-50%);width:16%;height:16%}
+.label2{text-align:center;color:var(--muted);font-size:12px;margin:14px 0 0;word-break:break-all}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:16px}
+.btn{border:1px solid var(--line);background:var(--panel2);padding:12px;border-radius:12px;font-weight:700;font-size:12px;cursor:pointer;transition:.18s}
+.btn:hover:not(:disabled){border-color:var(--accent)}
+.btn.main{grid-column:1/-1;background:linear-gradient(100deg,var(--accent2),var(--accent));color:#fff;border:0;padding:14px;font-size:13px;box-shadow:0 9px 24px #7667ff40}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.status{font-size:12px;min-height:18px;text-align:center;margin-top:12px;color:var(--good)}.status.warn{color:var(--warn)}
+.foot{text-align:center;color:var(--muted);font-size:11px;margin-top:28px}.hidden{display:none!important}
+@media(max-width:800px){.workspace{grid-template-columns:1fr}.preview{position:static}nav{margin-bottom:32px}.stage{min-height:290px}}
+@media(max-width:420px){.panel{padding:16px}.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="shell">
+<nav><div class="brand"><div class="mark">▦</div>JAQR</div><button class="pill" id="theme" type="button">◐ Theme</button></nav>
+<header class="hero"><div class="eyebrow">✦ CREATE · CUSTOMIZE · CONNECT</div><h1>Your links,<br><span>one scan away.</span></h1><p>Type anything. Your QR code updates live.</p></header>
+<main class="workspace">
+<section class="panel">
+ <div class="head"><h2>Build your QR code</h2><span class="step">01 / CREATE</span></div>
+ <span class="label" style="margin-top:0">What do you want to share?</span>
+ <div class="types" id="types">
+  <button class="tbtn on" data-type="url" type="button"><span>↗</span>Website</button>
+  <button class="tbtn" data-type="whatsapp" type="button"><span>◉</span>WhatsApp</button>
+  <button class="tbtn" data-type="email" type="button"><span>✉</span>Email</button>
+  <button class="tbtn" data-type="phone" type="button"><span>☎</span>Phone</button>
+  <button class="tbtn" data-type="wifi" type="button"><span>⌁</span>Wi-Fi</button>
+  <button class="tbtn" data-type="text" type="button"><span>▤</span>Text</button>
+ </div>
+ <div id="fields">
+  <div class="field" data-f="url"><label for="url">Website URL</label><input class="control" id="url" placeholder="https://example.com" inputmode="url" autocapitalize="off"></div>
+  <div class="field hidden" data-f="whatsapp"><label for="wa">WhatsApp number (with country code)</label><input class="control" id="wa" placeholder="2348012345678" inputmode="tel"><div class="hint">Digits only, including your country code.</div><label for="wam">Optional message</label><input class="control" id="wam" placeholder="Hello! I found your contact…"></div>
+  <div class="field hidden" data-f="email"><label for="email">Email address</label><input class="control" id="email" type="email" placeholder="hello@example.com"><label for="subject">Subject (optional)</label><input class="control" id="subject" placeholder="Hello"><label for="body">Message (optional)</label><textarea class="control" id="body" placeholder="Write a message…"></textarea></div>
+  <div class="field hidden" data-f="phone"><label for="phone">Phone number</label><input class="control" id="phone" type="tel" placeholder="+234 801 234 5678"></div>
+  <div class="field hidden" data-f="wifi"><label for="ssid">Network name (SSID)</label><input class="control" id="ssid" placeholder="My Wi-Fi"><label for="password">Password</label><input class="control" id="password" placeholder="Password"><label for="enc">Security type</label><select class="control" id="enc"><option value="WPA">WPA / WPA2</option><option value="WEP">WEP</option><option value="nopass">No password</option></select><div class="hint">Wi-Fi details are encoded in the code. Share it only with people you trust.</div></div>
+  <div class="field hidden" data-f="text"><label for="text">Text to encode</label><textarea class="control" id="text" placeholder="Type a message, address or any short text…"></textarea></div>
+ </div>
+ <span class="label">Style</span>
+ <div class="presets" id="presets"></div>
+ <div class="row">
+  <div class="field"><label>QR color</label><div class="color"><input type="color" id="dark" value="#17152d"><code id="darkhex">#17152D</code></div></div>
+  <div class="field"><label>Background</label><div class="color"><input type="color" id="light" value="#ffffff"><code id="lighthex">#FFFFFF</code></div></div>
+ </div>
+ <div class="field"><div class="rh"><span>Size</span><strong id="sizev">320 px</strong></div><input type="range" id="size" min="200" max="800" step="20" value="320"></div>
+ <div class="field"><span class="label" style="margin-top:0">Center logo (optional)</span><div class="drop" id="drop" role="button" tabindex="0"><span class="thumb" id="thumb">＋</span><span class="dtxt"><b id="lname">Add your logo</b><small id="lsub">Tap to upload, or drop an image here</small></span><button type="button" class="rm hidden" id="ledit">Edit</button><button type="button" class="rm hidden" id="lrm">Remove</button></div><input type="file" id="logoFile" accept="image/*" class="vh"><div class="hint">PNG, JPG or SVG under 2 MB. A square logo on a transparent background looks best. Error correction is raised automatically so the code still scans.</div></div>
+</section>
+<section class="panel preview">
+ <div class="head"><h2>Your QR code</h2><span class="step">02 / PREVIEW</span></div>
+ <div class="stage"><div class="empty" id="empty"><div class="eicon">▦</div><b>Your QR code appears here</b>Enter your details to begin</div>
+  <div class="paper" id="paper"><div id="qr"></div><img class="logo" id="logoPrev" alt="Center logo"></div></div>
+ <p class="label2" id="qlabel">Ready when you are.</p>
+ <div class="actions">
+  <button class="btn main" id="dl" disabled type="button">↓ Download PNG</button>
+  <button class="btn" id="cpimg" disabled type="button">Copy image</button>
+  <button class="btn" id="cp" disabled type="button">Copy content</button>
+ </div>
+ <div class="status" id="status" role="status" aria-live="polite"></div>
+</section>
+</main>
+<div class="foot">JAQR · Scan it. Open it. · Your QR codes are made in your browser and never uploaded.</div>
+</div>
+<div class="modal" id="modal"><div class="mbox"><h3>Crop your logo</h3><div class="hint" style="margin:0">Drag to move. Use the slider to zoom.</div><div class="cvwrap"><canvas id="cv" width="320" height="320"></canvas></div><div class="rh"><span>Zoom</span></div><input type="range" id="czoom" min="0.3" max="4" step="0.01" value="1"><div class="tools"><button class="btn" id="crot" type="button">⟳ Rotate</button><button class="btn" data-shape="square" type="button">Square</button><button class="btn on" data-shape="rounded" type="button">Rounded</button><button class="btn" data-shape="circle" type="button">Circle</button></div><div class="mfoot"><button class="btn" id="ccancel" type="button">Cancel</button><button class="btn main" id="cuse" type="button" style="grid-column:auto">Use logo</button></div></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+let type='url',logo=null,last='',timer;
+const v=id=>$(id).value.trim();
+const PRE=[['#17152d','#ffffff'],['#6b5cf6','#ffffff'],['#0f766e','#ecfdf5'],['#be185d','#fff1f2'],['#ffffff','#17152d'],['#fde68a','#1e1b4b']];
+PRE.forEach(([d,l])=>{const b=document.createElement('button');b.type='button';b.className='sw';b.title=d+' on '+l;b.style.background=l;b.innerHTML='<i style="background:'+d+'"></i>';b.onclick=()=>{$('dark').value=d;$('light').value=l;sync();go()};$('presets').appendChild(b)});
+function sync(){['dark','light'].forEach(i=>$(i+'hex').textContent=$(i).value.toUpperCase());$('sizev').textContent=$('size').value+' px'}
+function lum(h){const c=[1,3,5].map(i=>{let x=parseInt(h.substr(i,2),16)/255;return x<=.03928?x/12.92:Math.pow((x+.055)/1.055,2.4)});return .2126*c[0]+.7152*c[1]+.0722*c[2]}
+function contrast(a,b){const x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)}
+function esc(s){return s.replace(/([\\;,:"])/g,'\\$1')}
+function payload(){
+ if(type==='url'){const r=v('url');if(!r)throw Error('');let u;try{u=new URL(/^https?:\/\//i.test(r)?r:'https://'+r);if(!u.hostname.includes('.'))throw 0}catch{throw Error('Enter a valid website URL.')}return u.href}
+ if(type==='whatsapp'){const n=v('wa').replace(/\D/g,'');if(!n)throw Error('');if(n.length<8||n.length>15)throw Error('Enter a valid number with country code.');return 'https://wa.me/'+n+(v('wam')?'?text='+encodeURIComponent(v('wam')):'')}
+ if(type==='email'){const e=v('email');if(!e)throw Error('');if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e))throw Error('Enter a valid email address.');const q=[];if(v('subject'))q.push('subject='+encodeURIComponent(v('subject')));if(v('body'))q.push('body='+encodeURIComponent(v('body')));return 'mailto:'+e+(q.length?'?'+q.join('&'):'')}
+ if(type==='phone'){const p=v('phone');if(!p)throw Error('');if(!/^\+?[\d\s().-]{7,20}$/.test(p))throw Error('Enter a valid phone number.');return 'tel:'+p.replace(/[^\d+]/g,'')}
+ if(type==='wifi'){const s=v('ssid');if(!s)throw Error('');const e=$('enc').value;return 'WIFI:T:'+e+';S:'+esc(s)+';P:'+(e==='nopass'?'':esc(v('password')))+';;'}
+ const t=v('text');if(!t)throw Error('');return t}
+function setBtns(on){['dl','cpimg','cp'].forEach(i=>$(i).disabled=!on)}
+function say(m,w){$('status').textContent=m;$('status').className='status'+(w?' warn':'')}
+function go(){
+ try{
+  if(!window.QRCode)throw Error('QR library did not load. Check your connection and refresh.');
+  const p=payload(),size=+$('size').value,d=$('dark').value,l=$('light').value;
+  $('qr').innerHTML='';
+  try{new QRCode($('qr'),{text:p,width:size,height:size,colorDark:d,colorLight:l,correctLevel:logo?QRCode.CorrectLevel.H:QRCode.CorrectLevel.Q})}catch{throw Error('That is too long for a QR code. Try something shorter.')}
+  last=p;$('empty').style.display='none';const pa=$('paper');pa.style.display='block';pa.style.background=l;pa.style.width=Math.min(size+32,420)+'px';
+  const lg=$('logoPrev');lg.style.display=logo?'block':'none';lg.style.background=l;if(logo)lg.src=logo;
+  $('qlabel').textContent=type==='wifi'?'Wi-Fi access QR code':type==='text'?'Text QR code':p.length>75?p.slice(0,72)+'…':p;
+  setBtns(true);
+  const c=contrast(d,l);
+  if(lum(d)>lum(l))say('Heads up: light code on a dark background may not scan on every phone.',1);
+  else if(c<3)say('Low contrast. Pick a darker code color so it scans reliably.',1);
+  else say('Looks great. Scan it to test.');
+ }catch(e){last='';$('paper').style.display='none';$('empty').style.display='';setBtns(false);say(e.message,!!e.message)}
+}
+function later(){clearTimeout(timer);timer=setTimeout(go,220)}
+document.querySelectorAll('.tbtn').forEach(b=>b.onclick=()=>{type=b.dataset.type;document.querySelectorAll('.tbtn').forEach(x=>x.classList.toggle('on',x===b));document.querySelectorAll('[data-f]').forEach(f=>f.classList.toggle('hidden',f.dataset.f!==type));go()});
+document.querySelectorAll('#fields .control').forEach(e=>{e.addEventListener('input',later);e.addEventListener('change',later)});
+['dark','light','size'].forEach(i=>$(i).addEventListener('input',()=>{sync();later()}));
+function logoUI(name){const on=!!logo;$('thumb').style.backgroundImage=on?'url('+logo+')':'';$('thumb').textContent=on?'':'＋';$('lname').textContent=on?name:'Add your logo';$('lsub').textContent=on?'Shown in the center of your QR code':'Tap to upload, or drop an image here';$('lrm').classList.toggle('hidden',!on);$('ledit').classList.toggle('hidden',!on)}
+let logoSrc=null,logoName='',cr={img:null,z:1,ox:0,oy:0,rot:0,shape:'rounded'};
+function takeLogo(f){if(!f)return;if(!/^image\//.test(f.type)){say('Please choose an image file.',1);return}if(f.size>8*1048576){say('Please choose an image under 8 MB.',1);return}const r=new FileReader();r.onload=()=>openCrop(r.result,f.name);r.readAsDataURL(f)}
+const cv=$('cv'),cx=cv.getContext('2d');
+function base(){const i=cr.img,sw=cr.rot%180!==0,w=sw?i.height:i.width,h=sw?i.width:i.height;return Math.min(cv.width/w,cv.height/h)}
+function paint(c,S){c.clearRect(0,0,S,S);c.save();c.beginPath();if(cr.shape==='circle')c.arc(S/2,S/2,S/2,0,7);else c.roundRect(0,0,S,S,cr.shape==='rounded'?S*.18:0);c.closePath();c.clip();const k=S/cv.width;c.translate(S/2+cr.ox*k,S/2+cr.oy*k);c.rotate(cr.rot*Math.PI/180);const s=base()*cr.z*k;c.scale(s,s);c.drawImage(cr.img,-cr.img.width/2,-cr.img.height/2);c.restore()}
+function openCrop(src,name){const im=new Image();im.onload=()=>{cr.img=im;cr.z=1;cr.ox=cr.oy=0;cr.rot=0;logoSrc=src;logoName=name;$('czoom').value=1;$('modal').classList.add('on');paint(cx,cv.width)};im.onerror=()=>say('Could not read that image. Try another one.',1);im.src=src}
+$('czoom').oninput=()=>{cr.z=+$('czoom').value;paint(cx,cv.width)};
+$('crot').onclick=()=>{cr.rot=(cr.rot+90)%360;paint(cx,cv.width)};
+document.querySelectorAll('[data-shape]').forEach(b=>b.onclick=()=>{cr.shape=b.dataset.shape;document.querySelectorAll('[data-shape]').forEach(x=>x.classList.toggle('on',x===b));paint(cx,cv.width)});
+let drag=null;cv.onpointerdown=e=>{drag={x:e.clientX,y:e.clientY};cv.setPointerCapture(e.pointerId)};cv.onpointermove=e=>{if(!drag)return;const k=cv.width/cv.getBoundingClientRect().width;cr.ox+=(e.clientX-drag.x)*k;cr.oy+=(e.clientY-drag.y)*k;drag={x:e.clientX,y:e.clientY};paint(cx,cv.width)};cv.onpointerup=cv.onpointercancel=()=>{drag=null};
+cv.addEventListener('wheel',e=>{e.preventDefault();cr.z=Math.min(4,Math.max(.3,cr.z-e.deltaY*.002));$('czoom').value=cr.z;paint(cx,cv.width)},{passive:false});
+$('ccancel').onclick=()=>$('modal').classList.remove('on');
+$('cuse').onclick=()=>{const o=document.createElement('canvas');o.width=o.height=400;paint(o.getContext('2d'),400);logo=o.toDataURL('image/png');logoUI(logoName);$('modal').classList.remove('on');go()};
+$('ledit').onclick=e=>{e.stopPropagation();if(logoSrc)openCrop(logoSrc,logoName)};
+$('drop').onclick=()=>$('logoFile').click();
+$('drop').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();$('logoFile').click()}};
+$('logoFile').onchange=()=>{takeLogo($('logoFile').files[0]);$('logoFile').value=''};
+$('lrm').onclick=e=>{e.preventDefault();e.stopPropagation();logo=null;$('logoFile').value='';logoUI();go()};
+['dragenter','dragover'].forEach(n=>$('drop').addEventListener(n,e=>{e.preventDefault();$('drop').classList.add('over')}));
+['dragleave','drop'].forEach(n=>$('drop').addEventListener(n,e=>{e.preventDefault();$('drop').classList.remove('over')}));
+$('drop').addEventListener('drop',e=>takeLogo(e.dataTransfer.files[0]));
+function srcCanvas(){let c=$('qr').querySelector('canvas');if(c&&c.width)return c;const im=$('qr').querySelector('img');if(!im)return null;c=document.createElement('canvas');c.width=im.naturalWidth;c.height=im.naturalHeight;c.getContext('2d').drawImage(im,0,0);return c}
+function render(){return new Promise(res=>{const s=srcCanvas();if(!s)return res(null);const pad=Math.round(s.width*.075),o=document.createElement('canvas');o.width=s.width+pad*2;o.height=s.height+pad*2;const x=o.getContext('2d');x.fillStyle=$('light').value;x.fillRect(0,0,o.width,o.height);x.drawImage(s,pad,pad);
+ if(!logo)return res(o);const im=new Image();im.onload=()=>{const z=s.width*.16,px=(o.width-z)/2,py=(o.height-z)/2,g=z*.08;x.fillStyle=$('light').value;x.beginPath();x.roundRect(px-g,py-g,z+g*2,z+g*2,z*.18);x.fill();x.drawImage(im,px,py,z,z);res(o)};im.onerror=()=>res(o);im.src=logo})}
+$('dl').onclick=async()=>{const o=await render();if(!o)return say('QR image is not ready yet.',1);const a=document.createElement('a');a.download='jaqr-code.png';a.href=o.toDataURL('image/png');a.click();say('PNG downloaded.')};
+$('cpimg').onclick=async()=>{try{const o=await render();const b=await new Promise(r=>o.toBlob(r,'image/png'));await navigator.clipboard.write([new ClipboardItem({'image/png':b})]);say('Image copied. Paste it anywhere.')}catch{say('Image copy isn’t supported here. Use Download instead.',1)}};
+$('cp').onclick=async()=>{try{await navigator.clipboard.writeText(last);say('Encoded content copied.')}catch{say('Clipboard unavailable in this browser.',1)}};
+$('theme').onclick=()=>{const r=document.documentElement,dark=matchMedia('(prefers-color-scheme: dark)').matches;const cur=r.dataset.theme||(dark?'dark':'light');r.dataset.theme=cur==='dark'?'light':'dark'};
+sync();
+</script>
+</body>
+</html>
+
